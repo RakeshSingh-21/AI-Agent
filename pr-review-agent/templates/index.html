@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>PR Review Agent</title>
+</head>
+<body>
+
+<h2>PR Review Agent</h2>
+
+<textarea id="diff" rows="15" cols="80" placeholder="Paste PR diff here..."></textarea>
+<br><br>
+
+<button onclick="analyze()">Analyze</button>
+
+<h3>Review:</h3>
+<pre id="output"></pre>
+
+<script>
+async function analyze() {
+    const diff = document.getElementById("diff").value;
+
+    const response = await fetch("/analyze", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ diff: diff })
+    });
+
+    const data = await response.json();
+
+    document.getElementById("output").innerText = data.review;
+}
+</script>
+
+</body>
+</html>
